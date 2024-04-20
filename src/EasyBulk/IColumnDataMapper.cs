@@ -1,6 +1,6 @@
 namespace EasyBulkTests;
 
-public interface IColumnDataMapping<T>
+public interface IColumnDataMapper<T>
 {
     public string ColumnName {get;}
     public Type ColumnType {get;}

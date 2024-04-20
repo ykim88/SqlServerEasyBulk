@@ -2,9 +2,9 @@ using System.Linq.Expressions;
 
 namespace EasyBulkTests;
 
-internal class ColumnDataMapping<T, TData> : IColumnDataMapping<T>
+internal class ColumnDataMapper<T, TData> : IColumnDataMapper<T>
 {
-    public ColumnDataMapping(string columnName, Expression<Func<T, object>> dataSelector)
+    public ColumnDataMapper(string columnName, Expression<Func<T, object>> dataSelector)
     {
         ColumnName = columnName;
         ColumnType = GetDataType();
@@ -15,6 +15,10 @@ internal class ColumnDataMapping<T, TData> : IColumnDataMapping<T>
     public Func<T, object> DataSelector {get;}
     private static Type GetDataType()
     {
-        return typeof(TData);
+        var dataType = typeof(TData);
+        
+        var nullableType = Nullable.GetUnderlyingType(dataType);
+        
+        return nullableType ?? dataType;
     }
 }

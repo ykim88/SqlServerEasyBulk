@@ -14,11 +14,26 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int)");
-        var dataMapping = new[] { new ColumnDataMapping<int, int>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnDataMapper<int, int>("Column1", i=>i)};
         
         await Bulk(connection, "Test", data, dataMapping);
 
         var result = await connection.QueryAsync<int>("SELECT Column1 FROM Test");
+        CollectionAssert.AreEquivalent(data, result);
+    }
+
+    [Test]
+    public async Task FillOneIntNullableColumn()
+    {
+        var data = Enumerable.Range(0,100).Select<int, int?>(_ => null).ToList();
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync("CREATE TABLE Test (Column1 int NULL)");
+        var dataMapping = new[] { new ColumnDataMapper<int?, int?>("Column1", i=>i)};
+        
+        await Bulk(connection, "Test", data, dataMapping);
+
+        var result = await connection.QueryAsync<int?>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
     }
 
@@ -29,7 +44,22 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25))");
-        var dataMapping = new[] { new ColumnDataMapping<string, string>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
+        
+        await Bulk(connection, "Test", data, dataMapping);
+
+        var result = await connection.QueryAsync<string>("SELECT Column1 FROM Test");
+        CollectionAssert.AreEquivalent(data, result);
+    }
+
+    [Test]
+    public async Task FillOneStringNullColumn()
+    {
+        var data = Enumerable.Range(0,100).Select<int, string>(_ => null).ToList();
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25) NULL)");
+        var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
         
         await Bulk(connection, "Test", data, dataMapping);
 
@@ -44,11 +74,26 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4))");
-        var dataMapping = new[] { new ColumnDataMapping<decimal, decimal>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnDataMapper<decimal, decimal>("Column1", i=>i)};
         
         await Bulk(connection, "Test", data, dataMapping);
 
         var result = await connection.QueryAsync<decimal>("SELECT Column1 FROM Test");
+        CollectionAssert.AreEquivalent(data, result);
+    }
+
+    [Test]
+    public async Task FillOneDecimalNullColumn()
+    {
+        var data = Enumerable.Range(0,100).Select<int, decimal?>(_ => null).ToList();
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4) NULL)");
+        var dataMapping = new[] { new ColumnDataMapper<decimal?, decimal?>("Column1", i=>i)};
+        
+        await Bulk(connection, "Test", data, dataMapping);
+
+        var result = await connection.QueryAsync<decimal?>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
     }
 
@@ -65,7 +110,7 @@ public class BulkTests
 
 
 
-    public async Task Bulk<T>(SqlConnection connection, string destinationTableName, IEnumerable<T> data, IEnumerable<IColumnDataMapping<T>> mappings)
+    public async Task Bulk<T>(SqlConnection connection, string destinationTableName, IEnumerable<T> data, IEnumerable<IColumnDataMapper<T>> mappings)
     {
         using var table = new DataTable(destinationTableName);
         foreach(var mapping in mappings)
@@ -76,7 +121,7 @@ public class BulkTests
             var row = table.NewRow();
             
             foreach(var mapping in mappings)
-                row[mapping.ColumnName] = mapping.DataSelector(d);
+                row[mapping.ColumnName] = mapping.DataSelector(d) ?? DBNull.Value;
 
             return row;
         });
