@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Dapper;
+using Microsoft.Data.SqlClient;
 
 namespace EasyBulkTests;
 
@@ -6,7 +7,7 @@ namespace EasyBulkTests;
 public class TestSetup
 {
     private static readonly string TestDatabseName = $"TestDB_{DateTime.UtcNow:yyyyMMddHHmmssfff}";
-    // private const string BaseConnectionString = "Server=sqlServer;Database=master;User Id=SA;Password=password123!;MultipleActiveResultSets=true;TrustServerCertificate=True";
+
     public static string TestDbConnectionString {get; private set;}
 
     [OneTimeSetUp]
@@ -26,9 +27,8 @@ public class TestSetup
 
         using var connection = new SqlConnection(connectionStringBuilder.ConnectionString);
         await connection.OpenAsync();
-        using var cmd = connection.CreateCommand();
-        cmd.CommandText = $"CREATE DATABASE {TestDatabseName}";
-        await cmd.ExecuteNonQueryAsync();
+        await connection.ExecuteAsync($"CREATE DATABASE {TestDatabseName}");
+        
         await connection.CloseAsync();
 
         TestDbConnectionString = new SqlConnectionStringBuilder
@@ -42,8 +42,14 @@ public class TestSetup
     }
 
     [OneTimeTearDown]
-    public void Drop()
+    public async Task DropAsync()
     {
+        using var connection = new SqlConnection(TestDbConnectionString);
+        await connection.OpenAsync();
 
+        await connection.ChangeDatabaseAsync("master");
+        
+        await connection.ExecuteAsync($"DROP DATABASE {TestDatabseName}");
+        
     }
 }
