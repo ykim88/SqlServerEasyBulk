@@ -28,13 +28,8 @@ internal class BulkOperation<T>
 
     public Task Execute(SqlConnection connection)
     {
-        using var bulk = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, null);
-
-        bulk.DestinationTableName = _table.TableName;
-        foreach (DataColumn column in _table.Columns)
-            bulk.ColumnMappings.Add(column.ColumnName, column.ColumnName);
-
-        return bulk.WriteToServerAsync(_table);
+        var executor = new BulkCopyExecutor(connection);
+        return executor.Execute(_table);
     }
 
     public void FillDataTable(IEnumerable<T> data)
