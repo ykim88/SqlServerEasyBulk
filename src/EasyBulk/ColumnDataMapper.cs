@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 
-namespace EasyBulkTests;
+namespace EasyBulk;
 
 internal class ColumnDataMapper<T, TData> : IColumnDataMapper<T>
 {

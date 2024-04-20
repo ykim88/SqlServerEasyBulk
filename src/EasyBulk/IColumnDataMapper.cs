@@ -1,4 +1,4 @@
-namespace EasyBulkTests;
+namespace EasyBulk;
 
 public interface IColumnDataMapper<T>
 {

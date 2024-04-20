@@ -2,6 +2,7 @@ using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using NUnit.Framework.Legacy;
+using EasyBulk;
 
 namespace EasyBulkTests;
 
@@ -16,7 +17,7 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int)");
         var dataMapping = new[] { new ColumnDataMapper<int, int>("Column1", i=>i)};
         
-        await Bulk(connection, "Test", data, dataMapping);
+        await connection.Bulk("Test", data, dataMapping);
 
         var result = await connection.QueryAsync<int>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -31,7 +32,7 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int NULL)");
         var dataMapping = new[] { new ColumnDataMapper<int?, int?>("Column1", i=>i)};
         
-        await Bulk(connection, "Test", data, dataMapping);
+        await connection.Bulk("Test", data, dataMapping);
 
         var result = await connection.QueryAsync<int?>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -46,7 +47,7 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25))");
         var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
         
-        await Bulk(connection, "Test", data, dataMapping);
+        await connection.Bulk("Test", data, dataMapping);
 
         var result = await connection.QueryAsync<string>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -61,7 +62,7 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25) NULL)");
         var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
         
-        await Bulk(connection, "Test", data, dataMapping);
+        await connection.Bulk("Test", data, dataMapping);
 
         var result = await connection.QueryAsync<string>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -76,7 +77,7 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4))");
         var dataMapping = new[] { new ColumnDataMapper<decimal, decimal>("Column1", i=>i)};
         
-        await Bulk(connection, "Test", data, dataMapping);
+        await connection.Bulk("Test", data, dataMapping);
 
         var result = await connection.QueryAsync<decimal>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -91,7 +92,7 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4) NULL)");
         var dataMapping = new[] { new ColumnDataMapper<decimal?, decimal?>("Column1", i=>i)};
         
-        await Bulk(connection, "Test", data, dataMapping);
+        await connection.Bulk("Test", data, dataMapping);
 
         var result = await connection.QueryAsync<decimal?>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -103,40 +104,5 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("DROP TABLE Test");
-    }
-
-
-
-
-
-
-    public async Task Bulk<T>(SqlConnection connection, string destinationTableName, IEnumerable<T> data, IEnumerable<IColumnDataMapper<T>> mappings)
-    {
-        using var table = new DataTable(destinationTableName);
-        foreach(var mapping in mappings)
-            table.Columns.Add(mapping.ColumnName, mapping.ColumnType);
-
-        var rows = data.Select(d => 
-        {
-            var row = table.NewRow();
-            
-            foreach(var mapping in mappings)
-                row[mapping.ColumnName] = mapping.DataSelector(d) ?? DBNull.Value;
-
-            return row;
-        });
-
-        foreach(var row in rows)
-            table.Rows.Add(row);
-        
-        table.AcceptChanges();
-
-        using var bulk = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, null);
-
-        bulk.DestinationTableName = destinationTableName;
-        foreach(DataColumn column in table.Columns)
-            bulk.ColumnMappings.Add(column.ColumnName, column.ColumnName);
-        
-        await bulk.WriteToServerAsync(table);
-    }
+    }    
 }

@@ -1,4 +1,6 @@
-﻿namespace EasyBulkTests;
+﻿using EasyBulk;
+
+namespace EasyBulkTests;
 
 public class ColumnDataMapperTests
 {
