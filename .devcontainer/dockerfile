@@ -1,0 +1,4 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS easy_bulk_dev
+
+
+RUN apt update

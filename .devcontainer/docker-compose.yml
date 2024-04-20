@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  localdev:
+    build:
+      context: "."
+      dockerfile: "dockerfile"
+    container_name: "easybulk_local"
+    volumes:
+      - ..:/easybulk
+    depends_on:
+      - sqlServer
+    environment:
+      SQL_HOST: ${SQL_HOST}
+      SQL_PASSWORD: ${SQL_PASSWORD}
+    command: sleep infinity
+  
+  sqlServer:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: ${SQL_HOST}
+    environment:
+      MSSQL_SA_PASSWORD: ${SQL_PASSWORD}
+      ACCEPT_EULA: "Y"
+    ports:
+      - 1433:1433
