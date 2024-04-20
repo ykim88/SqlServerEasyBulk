@@ -12,7 +12,7 @@ internal class BulkCopyExecutor
         _connection = connection;
     }
     
-    public async Task Execute(DataTable table)
+    public async Task ExecuteAsync(DataTable table)
     {
         using var bulk = new SqlBulkCopy(_connection, SqlBulkCopyOptions.Default, null);
 

@@ -4,15 +4,19 @@ namespace EasyBulk;
 
 internal class ColumnDataMapper<T, TData> : IColumnDataMapper<T>
 {
-    public ColumnDataMapper(string columnName, Expression<Func<T, object>> dataSelector)
+    public readonly Func<T, TData> _dataSelector;
+
+    public ColumnDataMapper(string columnName, Expression<Func<T, TData>> dataSelector)
     {
         ColumnName = columnName;
         ColumnType = GetDataType();
-        DataSelector = dataSelector.Compile();
+        _dataSelector = dataSelector.Compile();
     }
     public string ColumnName {get;}
     public Type ColumnType {get;}
-    public Func<T, object> DataSelector {get;}
+
+    public object DataSelector(T obj) => _dataSelector(obj);
+
     private static Type GetDataType()
     {
         var dataType = typeof(TData);

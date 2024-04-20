@@ -17,7 +17,9 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int)");
         var dataMapping = new[] { new ColumnDataMapper<int, int>("Column1", i=>i)};
         
-        await connection.Bulk("Test", data, dataMapping);
+        await connection.Bulk<int>("Test")
+        .MapColumn("Column1", i=>i)
+        .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<int>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -32,7 +34,9 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int NULL)");
         var dataMapping = new[] { new ColumnDataMapper<int?, int?>("Column1", i=>i)};
         
-        await connection.Bulk("Test", data, dataMapping);
+        await connection.Bulk<int?>("Test")
+        .MapColumn("Column1", i=>i)
+        .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<int?>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -47,7 +51,9 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25))");
         var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
         
-        await connection.Bulk("Test", data, dataMapping);
+        await connection.Bulk<string>("Test")
+        .MapColumn("Column1", i=>i)
+        .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<string>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -62,7 +68,9 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25) NULL)");
         var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
         
-        await connection.Bulk("Test", data, dataMapping);
+        await connection.Bulk<string>("Test")
+        .MapColumn("Column1", i=>i)
+        .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<string>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -77,7 +85,9 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4))");
         var dataMapping = new[] { new ColumnDataMapper<decimal, decimal>("Column1", i=>i)};
         
-        await connection.Bulk("Test", data, dataMapping);
+        await connection.Bulk<decimal>("Test")
+        .MapColumn("Column1", i=>i)
+        .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<decimal>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);
@@ -92,7 +102,9 @@ public class BulkTests
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4) NULL)");
         var dataMapping = new[] { new ColumnDataMapper<decimal?, decimal?>("Column1", i=>i)};
         
-        await connection.Bulk("Test", data, dataMapping);
+        await connection.Bulk<decimal?>("Test")
+        .MapColumn("Column1", i=>i)
+        .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<decimal?>("SELECT Column1 FROM Test");
         CollectionAssert.AreEquivalent(data, result);

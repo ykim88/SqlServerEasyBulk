@@ -4,5 +4,5 @@ public interface IColumnDataMapper<T>
 {
     public string ColumnName {get;}
     public Type ColumnType {get;}
-    public Func<T, object> DataSelector {get;}
+    public object DataSelector(T obj);
 }

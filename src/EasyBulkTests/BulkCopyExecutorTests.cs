@@ -17,7 +17,7 @@ public class BulkCopyExecutorTests
         var executor = new BulkCopyExecutor(connection);
         using var table = CreateDatatTable("Test");
 
-        await executor.Execute(table);
+        await executor.ExecuteAsync(table);
 
         var result = await connection.QueryAsync<TestObject>("SELECT IntColumn, StringColumn, DecimalColumn, FloatColumn, BitColumn FROM Test");
         ReadTable(table).Should().BeEquivalentTo(result);
@@ -31,7 +31,7 @@ public class BulkCopyExecutorTests
         var executor = new BulkCopyExecutor(connection);
         using var table = CreateDatatTable("Test");
 
-        var execute = async () => await executor.Execute(table);
+        var execute = async () => await executor.ExecuteAsync(table);
 
         await execute.Should().ThrowExactlyAsync<InvalidOperationException>();
     }
