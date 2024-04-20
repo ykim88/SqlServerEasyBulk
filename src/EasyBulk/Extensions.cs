@@ -18,7 +18,7 @@ public static class Extensions
 internal class BulkOperation<T>
 {
     private readonly string _tableName;
-    private IEnumerable<IColumnDataMapper<T>> _mappings;
+    private IReadOnlyCollection<IColumnDataMapper<T>> _mappings;
     private DataTable _table;
 
     public BulkOperation(string destinationTable)
@@ -30,7 +30,7 @@ internal class BulkOperation<T>
     {
         using var bulk = new SqlBulkCopy(connection, SqlBulkCopyOptions.Default, null);
 
-        bulk.DestinationTableName = _tableName;
+        bulk.DestinationTableName = _table.TableName;
         foreach (DataColumn column in _table.Columns)
             bulk.ColumnMappings.Add(column.ColumnName, column.ColumnName);
 
@@ -57,7 +57,7 @@ internal class BulkOperation<T>
 
     public void CreateDataTable(IEnumerable<IColumnDataMapper<T>> mappings)
     {
-        _mappings = mappings;
+        _mappings = mappings.ToList();
         _table = new DataTable(_tableName);
         foreach (var mapping in _mappings)
             _table.Columns.Add(mapping.ColumnName, mapping.ColumnType);
