@@ -1,5 +1,4 @@
 using System.Data;
-using System.Linq.Expressions;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using NUnit.Framework.Legacy;
@@ -94,31 +93,5 @@ public class BulkTests
             bulk.ColumnMappings.Add(column.ColumnName, column.ColumnName);
         
         await bulk.WriteToServerAsync(table);
-    }
-
-    public interface IColumnDataMapping<T>
-    {
-        public string ColumnName {get;}
-        public Type ColumnType {get;}
-        public Func<T, object> DataSelector {get;}
-    }
-
-    internal class ColumnDataMapping<T, TData> : IColumnDataMapping<T>
-    {
-        public ColumnDataMapping(string columnName, Expression<Func<T, object>> dataSelector)
-        {
-            ColumnName = columnName;
-            ColumnType = GetDataType();
-            DataSelector = dataSelector.Compile();
-        }
-
-        public string ColumnName {get;}
-        public Type ColumnType {get;}
-        public Func<T, object> DataSelector {get;}
-
-        private static Type GetDataType()
-        {
-            return typeof(TData);
-        }
     }
 }

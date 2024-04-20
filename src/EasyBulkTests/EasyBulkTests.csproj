@@ -23,4 +23,8 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyBulk\EasyBulk.csproj" />
+  </ItemGroup>
+
 </Project>
