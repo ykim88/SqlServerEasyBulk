@@ -14,13 +14,46 @@ public class BulkCopyExecutorTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
-        var executor = new BulkCopyExecutor(connection);
+        var executor = new BulkCopyExecutor(connection, null);
         using var table = CreateDatatTable("Test");
 
-        await executor.ExecuteAsync(table);
+        await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);
 
         var result = await connection.QueryAsync<TestObject>("SELECT IntColumn, StringColumn, DecimalColumn, FloatColumn, BitColumn FROM Test");
         ReadTable(table).Should().BeEquivalentTo(result);
+    }
+
+    [Test]
+    public async Task ExecuteWithTransaction()
+    {
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
+        using SqlTransaction transaction = connection.BeginTransaction();
+        var executor = new BulkCopyExecutor(connection, transaction);
+        using var table = CreateDatatTable("Test");
+
+        await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);
+
+        await transaction.CommitAsync();
+        var result = await connection.QueryAsync<TestObject>("SELECT IntColumn, StringColumn, DecimalColumn, FloatColumn, BitColumn FROM Test");
+        ReadTable(table).Should().BeEquivalentTo(result);
+    }
+
+    [Test]
+    public async Task RollbackedTransaction()
+    {
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
+        using SqlTransaction transaction = connection.BeginTransaction();
+        var executor = new BulkCopyExecutor(connection, transaction);
+        using var table = CreateDatatTable("Test");
+        await transaction.RollbackAsync();
+
+        var execute = async () => await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);
+
+        await execute.Should().ThrowAsync<InvalidOperationException>();
     }
 
     [Test]
@@ -28,10 +61,10 @@ public class BulkCopyExecutorTests
     {
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
-        var executor = new BulkCopyExecutor(connection);
+        var executor = new BulkCopyExecutor(connection, null);
         using var table = CreateDatatTable("Test");
 
-        var execute = async () => await executor.ExecuteAsync(table);
+        var execute = async () => await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);
 
         await execute.Should().ThrowExactlyAsync<InvalidOperationException>();
     }
