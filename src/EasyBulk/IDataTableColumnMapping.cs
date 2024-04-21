@@ -1,6 +1,9 @@
-namespace EasyBulk;
+using System.Collections.Generic;
 
-internal interface IDataTableColumnMapping<T>
+namespace EasyBulk
 {
-    IDataTableBuilder<T> ColumnsMapping(IReadOnlyCollection<IColumnMapper<T>> columnMappers);
+    internal interface IDataTableColumnMapping<T>
+    {
+        IDataTableBuilder<T> ColumnsMapping(IReadOnlyCollection<IColumnMapper<T>> columnMappers);
+    }
 }

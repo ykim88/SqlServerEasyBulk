@@ -1,7 +1,11 @@
-namespace EasyBulk;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public interface IBulkOperation<T>
+namespace EasyBulk
 {
-    IBulkOperation<T> MapColumn(IColumnMapper<T> columnMap);
-    Task ExecuteAsync(IEnumerable<T> data);
+    public interface IBulkOperation<T>
+    {
+        IBulkOperation<T> MapColumn(IColumnMapper<T> columnMap);
+        Task ExecuteAsync(IEnumerable<T> data);
+    }
 }

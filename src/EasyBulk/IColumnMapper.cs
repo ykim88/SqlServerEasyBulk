@@ -1,8 +1,11 @@
-namespace EasyBulk;
+using System;
 
-public interface IColumnMapper<T>
+namespace EasyBulk
 {
-    public string ColumnName {get;}
-    public Type ColumnType {get;}
-    public object DataSelector(T obj);
+    public interface IColumnMapper<T>
+    {
+        string ColumnName { get; }
+        Type ColumnType { get; }
+        object DataSelector(T obj);
+    }
 }
