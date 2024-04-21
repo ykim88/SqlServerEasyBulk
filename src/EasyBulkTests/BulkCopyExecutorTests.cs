@@ -44,8 +44,6 @@ public class BulkCopyExecutorTests
         await connection.ExecuteAsync("DROP TABLE Test");
     }
 
-    private record TestObject(int IntColumn, string StringColumn, decimal DecimalColumn,double FloatColumn, bool BitColumn);
-
     private static IEnumerable<TestObject> ReadTable(DataTable table)
     {
         foreach(DataRow row in table.Rows)

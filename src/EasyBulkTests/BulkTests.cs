@@ -15,7 +15,7 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int)");
-        var dataMapping = new[] { new ColumnDataMapper<int, int>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnMapper<int, int>("Column1", i=>i)};
         
         await connection.Bulk<int>("Test")
         .MapColumn("Column1", i=>i)
@@ -32,7 +32,7 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 int NULL)");
-        var dataMapping = new[] { new ColumnDataMapper<int?, int?>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnMapper<int?, int?>("Column1", i=>i)};
         
         await connection.Bulk<int?>("Test")
         .MapColumn("Column1", i=>i)
@@ -49,7 +49,7 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25))");
-        var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnMapper<string, string>("Column1", i=>i)};
         
         await connection.Bulk<string>("Test")
         .MapColumn("Column1", i=>i)
@@ -66,7 +66,7 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 nvarchar(25) NULL)");
-        var dataMapping = new[] { new ColumnDataMapper<string, string>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnMapper<string, string>("Column1", i=>i)};
         
         await connection.Bulk<string>("Test")
         .MapColumn("Column1", i=>i)
@@ -83,7 +83,7 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4))");
-        var dataMapping = new[] { new ColumnDataMapper<decimal, decimal>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnMapper<decimal, decimal>("Column1", i=>i)};
         
         await connection.Bulk<decimal>("Test")
         .MapColumn("Column1", i=>i)
@@ -100,7 +100,7 @@ public class BulkTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 decimal(10,4) NULL)");
-        var dataMapping = new[] { new ColumnDataMapper<decimal?, decimal?>("Column1", i=>i)};
+        var dataMapping = new[] { new ColumnMapper<decimal?, decimal?>("Column1", i=>i)};
         
         await connection.Bulk<decimal?>("Test")
         .MapColumn("Column1", i=>i)

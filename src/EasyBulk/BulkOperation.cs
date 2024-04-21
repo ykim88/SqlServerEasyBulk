@@ -22,18 +22,18 @@ internal class BulkOperation<T> : IBulkOperation<T>
 
     public IBulkOperation<T> MapColumn<TData>(string columnName, Expression<Func<T, TData>> dataSelector)
     {
-        var map = new ColumnDataMapper<T,TData>(columnName, dataSelector);
+        var map = new ColumnMapper<T,TData>(columnName, dataSelector);
         _columnMappings.Add(map);
         return this;
     }
 
-    public Task ExecuteAsync(IEnumerable<T> data)
+    public async Task ExecuteAsync(IEnumerable<T> data)
     {
         using var table = DataTableBuilder.Create<T>(_tableName)
             .ColumnsMapping(_columnMappings)
             .FillWith(data)
             .Build();
         var executor = new BulkCopyExecutor(_connection);
-        return executor.ExecuteAsync(table);
+        await executor.ExecuteAsync(table);
     }
 }

@@ -2,11 +2,11 @@ using System.Linq.Expressions;
 
 namespace EasyBulk;
 
-internal class ColumnDataMapper<T, TData> : IColumnDataMapper<T>
+internal class ColumnMapper<T, TData> : IColumnDataMapper<T>
 {
     public readonly Func<T, TData> _dataSelector;
 
-    public ColumnDataMapper(string columnName, Expression<Func<T, TData>> dataSelector)
+    public ColumnMapper(string columnName, Expression<Func<T, TData>> dataSelector)
     {
         ColumnName = columnName;
         ColumnType = GetDataType();

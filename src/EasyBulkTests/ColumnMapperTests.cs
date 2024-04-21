@@ -2,14 +2,14 @@
 
 namespace EasyBulkTests;
 
-public class ColumnDataMapperTests
+public class ColumnMapperTests
 {
     [TestCase(1)]
     [TestCase(1.1)]
     [TestCase("thisIsAString")]
     public void MapType<T>(T expectedValue)
     {
-        var columnMap = new ColumnDataMapper<T,T>("DoNotMatter", _=>_);
+        var columnMap = new ColumnMapper<T,T>("DoNotMatter", _=>_);
 
         Assert.That(columnMap.ColumnType, Is.EqualTo(typeof(T)));
     }
@@ -17,7 +17,7 @@ public class ColumnDataMapperTests
     [Test]
     public void MapDecimal()
     {
-        var columnMap = new ColumnDataMapper<decimal,decimal>("DoNotMatter", _=>_);
+        var columnMap = new ColumnMapper<decimal,decimal>("DoNotMatter", _=>_);
 
         Assert.That(columnMap.ColumnType, Is.EqualTo(typeof(decimal)));
     }
@@ -25,7 +25,7 @@ public class ColumnDataMapperTests
     [Test]
     public void MapNullableInt()
     {
-        var columnMap = new ColumnDataMapper<int?,int?>("DoNotMatter", i=>i);
+        var columnMap = new ColumnMapper<int?,int?>("DoNotMatter", i=>i);
 
         Assert.That(columnMap.ColumnType, Is.EqualTo(typeof(int)));
     }
@@ -33,7 +33,7 @@ public class ColumnDataMapperTests
     [Test]
     public void MapNullableDecimal()
     {
-        var columnMap = new ColumnDataMapper<decimal?,decimal?>("DoNotMatter", i=>i);
+        var columnMap = new ColumnMapper<decimal?,decimal?>("DoNotMatter", i=>i);
 
         Assert.That(columnMap.ColumnType, Is.EqualTo(typeof(decimal)));
     }
@@ -41,7 +41,7 @@ public class ColumnDataMapperTests
     [Test]
     public void MapNullableDouble()
     {
-        var columnMap = new ColumnDataMapper<double?, double?>("DoNotMatter", i=>i);
+        var columnMap = new ColumnMapper<double?, double?>("DoNotMatter", i=>i);
 
         Assert.That(columnMap.ColumnType, Is.EqualTo(typeof(double)));
     }
