@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-
 namespace EasyBulk;
 
 public interface IBulkOperation<T>

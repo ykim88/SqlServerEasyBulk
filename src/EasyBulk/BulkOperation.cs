@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Microsoft.Data.SqlClient;
 
 namespace EasyBulk;
