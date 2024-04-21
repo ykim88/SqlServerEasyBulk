@@ -9,7 +9,7 @@ internal class DataTableBuilder
     private class GenericsDataTableBuilder<T> : IDataTableBuilder<T>, IDataTableColumnMapping<T>
     {
         private readonly string _tableName;
-        private IReadOnlyCollection<IColumnDataMapper<T>> _columnMappings;
+        private IReadOnlyCollection<IColumnMapper<T>> _columnMappings;
         private IEnumerable<T> _data;
 
         public GenericsDataTableBuilder(string tableName)
@@ -17,7 +17,7 @@ internal class DataTableBuilder
             _tableName = tableName;
         }
 
-        public IDataTableBuilder<T> ColumnsMapping(IReadOnlyCollection<IColumnDataMapper<T>> columnMappers)
+        public IDataTableBuilder<T> ColumnsMapping(IReadOnlyCollection<IColumnMapper<T>> columnMappers)
         {
             _columnMappings = columnMappers;
             return this;

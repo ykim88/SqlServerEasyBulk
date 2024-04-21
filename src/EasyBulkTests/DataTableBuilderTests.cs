@@ -12,7 +12,7 @@ public class DataTableBuilderTests
         const string TableName = "TableName";
         var testObjectList = Enumerable.Range(0, 100).Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i%2==0))
             .ToList();
-        var columnMappings = new IColumnDataMapper<TestObject>[]
+        var columnMappings = new IColumnMapper<TestObject>[]
         {
             new ColumnMapper<TestObject, int>("IntColumn", obj => obj.IntColumn),
             new ColumnMapper<TestObject, string>("StringColumn", obj => obj.StringColumn),
@@ -35,7 +35,7 @@ public class DataTableBuilderTests
     public void DuplicatedColumnName()
     {
         var testObjectList = Enumerable.Range(0, 100).Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i%2==0));
-        var columnMappings = new IColumnDataMapper<TestObject>[]
+        var columnMappings = new IColumnMapper<TestObject>[]
         {
             new ColumnMapper<TestObject, int>("IntColumn", obj => obj.IntColumn),
             new ColumnMapper<TestObject, string>("IntColumn", obj => obj.StringColumn),
@@ -55,7 +55,7 @@ public class DataTableBuilderTests
     {
         const string TableName = "TableName";
         var testObjectList = Array.Empty<TestObject>();
-        var columnMappings = new IColumnDataMapper<TestObject>[]
+        var columnMappings = new IColumnMapper<TestObject>[]
         {
             new ColumnMapper<TestObject, int>("IntColumn", obj => obj.IntColumn),
             new ColumnMapper<TestObject, string>("IntColumn", obj => obj.StringColumn),

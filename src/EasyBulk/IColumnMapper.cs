@@ -1,6 +1,6 @@
 namespace EasyBulk;
 
-public interface IColumnDataMapper<T>
+public interface IColumnMapper<T>
 {
     public string ColumnName {get;}
     public Type ColumnType {get;}

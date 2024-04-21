@@ -2,5 +2,5 @@ namespace EasyBulk;
 
 internal interface IDataTableColumnMapping<T>
 {
-    IDataTableBuilder<T> ColumnsMapping(IReadOnlyCollection<IColumnDataMapper<T>> columnMappers);
+    IDataTableBuilder<T> ColumnsMapping(IReadOnlyCollection<IColumnMapper<T>> columnMappers);
 }

@@ -7,7 +7,7 @@ internal class BulkOperation<T> : IBulkOperation<T>
 {
     private readonly string _tableName;
     private readonly SqlConnection _connection;
-    private List<IColumnDataMapper<T>> _columnMappings = new();
+    private List<IColumnMapper<T>> _columnMappings = new();
 
     public BulkOperation(string destinationTable)
     {
@@ -20,10 +20,9 @@ internal class BulkOperation<T> : IBulkOperation<T>
         _connection = connection;
     }
 
-    public IBulkOperation<T> MapColumn<TData>(string columnName, Expression<Func<T, TData>> dataSelector)
+    public IBulkOperation<T> MapColumn(IColumnMapper<T> columnMap)
     {
-        var map = new ColumnMapper<T,TData>(columnName, dataSelector);
-        _columnMappings.Add(map);
+        _columnMappings.Add(columnMap);
         return this;
     }
 
