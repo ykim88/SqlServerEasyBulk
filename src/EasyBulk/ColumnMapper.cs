@@ -1,17 +1,16 @@
 using System;
-using System.Linq.Expressions;
 
 namespace EasyBulk
 {
     internal class ColumnMapper<T, TData> : IColumnMapper<T>
     {
-        public readonly Func<T, TData> _dataSelector;
+        private readonly Func<T, TData> _dataSelector;
 
-        public ColumnMapper(string columnName, Expression<Func<T, TData>> dataSelector)
+        public ColumnMapper(string columnName, Func<T, TData> dataSelector)
         {
             ColumnName = columnName;
             ColumnType = GetDataType();
-            _dataSelector = dataSelector.Compile();
+            _dataSelector = dataSelector;
         }
         public string ColumnName { get; }
         public Type ColumnType { get; }

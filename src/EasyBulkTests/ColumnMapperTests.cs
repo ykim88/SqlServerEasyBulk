@@ -46,4 +46,15 @@ public class ColumnMapperTests
 
         columnMap.ColumnType.Should().Be(typeof(double));
     }
+
+    [Test]
+    public void MapDynamic()
+    {
+        var obj = new{ NullableNumber = default(float?) };
+
+        var columnMap = new ColumnMapper<dynamic, float?>("DoNotMatter", o=>o.NullableNumber);
+
+        columnMap.ColumnType.Should().Be(typeof(float));
+        columnMap.DataSelector(obj).Should().Be(obj.NullableNumber);
+    }
 }

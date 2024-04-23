@@ -177,6 +177,25 @@ public class BulkTests
         result.Should().BeEquivalentTo(data);
     }
 
+    [Test]
+    public async Task DynamicObject()
+    {
+         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        await connection.OpenAsync();
+        await connection.ExecuteAsync("CREATE TABLE Test (Date DATETIME2 NULL, I INT)");
+        var data = Enumerable.Range(0,100)
+        .Select(i => new {Date= DateTime.UtcNow, I = i})
+        .ToList();
+        
+        await connection.Bulk<dynamic>("Test")
+        .MapColumn("Date", i => i.Date)
+        .MapColumn("I", i => i.I)
+        .ExecuteAsync(data);
+
+        var result = await connection.QueryAsync<dynamic>("SELECT Date, I FROM Test");
+        result.Select(r => new{r.Date, r.I}).Should().BeEquivalentTo(data);
+    }
+
     [TearDown]
     public async Task DropTable()
     {
