@@ -18,12 +18,5 @@ namespace EasyBulk.Extensions
             var bulkExecutor = new SqlBulkCopyExecutor(connection, transaction);
             return new BulkOperation<T>(destinationTableName, bulkExecutor);
         }
-
-        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data) 
-            => bulk.ExecuteAsync(data, SqlBulkCopyOptions.Default, CancellationToken.None);
-        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data, SqlBulkCopyOptions options) 
-            => bulk.ExecuteAsync(data, options, CancellationToken.None);
-        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data, CancellationToken cancellationToken) 
-            => bulk.ExecuteAsync(data, SqlBulkCopyOptions.Default, cancellationToken);        
     }
 }

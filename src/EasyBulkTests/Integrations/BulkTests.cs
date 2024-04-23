@@ -1,7 +1,6 @@
 using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using EasyBulk;
 using EasyBulk.Extensions;
 using FluentAssertions;
 
