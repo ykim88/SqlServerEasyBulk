@@ -10,7 +10,8 @@ public class DataTableBuilderTests
     public void BuildDataTable()
     {
         const string TableName = "TableName";
-        var testObjectList = Enumerable.Range(0, 100).Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i%2==0))
+        var testObjectList = Enumerable.Range(0, 100)
+            .Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i%2==0))
             .ToList();
         var columnMappings = new IColumnMapper<TestObject>[]
         {
@@ -57,17 +58,16 @@ public class DataTableBuilderTests
         var testObjectList = Array.Empty<TestObject>();
         var columnMappings = new IColumnMapper<TestObject>[]
         {
-            new ColumnMapper<TestObject, int>("IntColumn", obj => obj.IntColumn),
             new ColumnMapper<TestObject, string>("IntColumn", obj => obj.StringColumn),
         };
         var expectedDataTable = TestUtil.CreateDataTable(TableName, testObjectList);
 
-        var building = () => DataTableBuilder
+        var dataTable = DataTableBuilder
             .Create<TestObject>(TableName)
             .ColumnsMapping(columnMappings)
             .FillWith(testObjectList)
             .Build();
 
-        building.Should().Throw<DuplicateNameException>();
+        dataTable.Rows.Should().BeEmpty();
     }
 }

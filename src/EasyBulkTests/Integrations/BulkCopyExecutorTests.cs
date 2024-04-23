@@ -4,7 +4,7 @@ using EasyBulk;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulkTests;
+namespace EasyBulkTests.Integrations;
 
 public class BulkCopyExecutorTests
 {
@@ -79,7 +79,7 @@ public class BulkCopyExecutorTests
 
     private static IEnumerable<TestObject> ReadTable(DataTable table)
     {
-        foreach(DataRow row in table.Rows)
+        foreach (DataRow row in table.Rows)
         {
             yield return new TestObject(
                 Convert.ToInt32(row["IntColumn"].ToString()),
@@ -105,11 +105,11 @@ public class BulkCopyExecutorTests
         .Select(i =>
         {
             var row = table.NewRow();
-            row["IntColumn"]=i;
-            row["StringColumn"]=i.ToString();
-            row["DecimalColumn"]=Convert.ToDecimal(i);
-            row["FloatColumn"]=Convert.ToDouble(i);
-            row["BitColumn"]=i%2==0;
+            row["IntColumn"] = i;
+            row["StringColumn"] = i.ToString();
+            row["DecimalColumn"] = Convert.ToDecimal(i);
+            row["FloatColumn"] = Convert.ToDouble(i);
+            row["BitColumn"] = i % 2 == 0;
             return row;
         });
 

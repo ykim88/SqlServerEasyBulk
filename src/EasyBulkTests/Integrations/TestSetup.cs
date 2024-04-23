@@ -1,14 +1,14 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulkTests;
+namespace EasyBulkTests.Integrations;
 
 [SetUpFixture]
 public class TestSetup
 {
     private static readonly string TestDatabseName = $"TestDB_{DateTime.UtcNow:yyyyMMddHHmmssfff}";
 
-    public static string TestDbConnectionString {get; private set;}
+    public static string TestDbConnectionString { get; private set; }
 
     [OneTimeSetUp]
     public async Task CreateDBAsync()
@@ -28,7 +28,7 @@ public class TestSetup
         using var connection = new SqlConnection(connectionStringBuilder.ConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync($"CREATE DATABASE {TestDatabseName}");
-        
+
         await connection.CloseAsync();
 
         TestDbConnectionString = new SqlConnectionStringBuilder
@@ -48,8 +48,7 @@ public class TestSetup
         await connection.OpenAsync();
 
         await connection.ChangeDatabaseAsync("master");
-        
+
         await connection.ExecuteAsync($"DROP DATABASE {TestDatabseName}");
-        
     }
 }

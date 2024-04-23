@@ -28,4 +28,8 @@
     <ProjectReference Include="..\EasyBulk\EasyBulk.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integrations/" />
+  </ItemGroup>
+
 </Project>
