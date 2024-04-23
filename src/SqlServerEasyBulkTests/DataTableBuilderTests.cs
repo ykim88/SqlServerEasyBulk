@@ -1,8 +1,8 @@
 ﻿using System.Data;
-using EasyBulk;
 using FluentAssertions;
+using SqlServerEasyBulk;
 
-namespace EasyBulkTests;
+namespace SqlServerEasyBulkTests;
 
 public class DataTableBuilderTests
 {
@@ -11,7 +11,7 @@ public class DataTableBuilderTests
     {
         const string TableName = "TableName";
         var testObjectList = Enumerable.Range(0, 100)
-            .Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i%2==0))
+            .Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i % 2 == 0))
             .ToList();
         var columnMappings = new IColumnMapper<TestObject>[]
         {
@@ -35,7 +35,7 @@ public class DataTableBuilderTests
     [Test]
     public void DuplicatedColumnName()
     {
-        var testObjectList = Enumerable.Range(0, 100).Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i%2==0));
+        var testObjectList = Enumerable.Range(0, 100).Select(i => new TestObject(i, i.ToString(), Convert.ToDecimal(i), Convert.ToDouble(i), i % 2 == 0));
         var columnMappings = new IColumnMapper<TestObject>[]
         {
             new ColumnMapper<TestObject, int>("IntColumn", obj => obj.IntColumn),

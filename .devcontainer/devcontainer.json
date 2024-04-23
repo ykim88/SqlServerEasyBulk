@@ -31,7 +31,8 @@
 			"ms-dotnettools.vscodeintellicode-csharp",
 			"visualstudioexptteam.vscodeintellic",
 			"patcx.vscode-nuget-gallery",
-			"visualstudioexptteam.vscodeintellicode"
+			"visualstudioexptteam.vscodeintellicode",
+			"ms-mssql.sql-bindings-vscode"
 			]}
 	}
 

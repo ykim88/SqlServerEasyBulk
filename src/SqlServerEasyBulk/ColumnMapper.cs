@@ -1,6 +1,6 @@
 using System;
 
-namespace EasyBulk
+namespace SqlServerEasyBulk
 {
     internal class ColumnMapper<T, TData> : IColumnMapper<T>
     {

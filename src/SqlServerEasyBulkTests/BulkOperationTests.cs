@@ -1,10 +1,10 @@
 ﻿using System.Data;
-using EasyBulk;
-using EasyBulk.Extensions;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
+using SqlServerEasyBulk;
+using SqlServerEasyBulk.Extensions;
 
-namespace EasyBulkTests;
+namespace SqlServerEasyBulkTests;
 
 public class BulkOperationTests
 {
@@ -32,11 +32,11 @@ public class BulkOperationTests
         var expectedDataTable = TestUtil.CreateDataTable(DestinationTable, data);
 
         await bulkOperation
-        .AutoMapColumn(x=> x.IntColumn)
-        .AutoMapColumn(x=> x.StringColumn)
-        .AutoMapColumn(x=> x.DecimalColumn)
-        .AutoMapColumn(x=> x.FloatColumn)
-        .AutoMapColumn(x=> x.BitColumn)
+        .AutoMapColumn(x => x.IntColumn)
+        .AutoMapColumn(x => x.StringColumn)
+        .AutoMapColumn(x => x.DecimalColumn)
+        .AutoMapColumn(x => x.FloatColumn)
+        .AutoMapColumn(x => x.BitColumn)
         .ExecuteAsync(data, SqlBulkCopyOptions.KeepNulls, ctSource.Token);
 
         executorSpy.WasCall.Should().BeTrue();
@@ -57,13 +57,13 @@ public class BulkOperationTests
         .ToList();
         var ctSource = new CancellationTokenSource(TimeSpan.FromMinutes(1));
         var expectedDataTable = TestUtil.CreateDataTable(DestinationTable, data);
-        
+
         await bulkOperation
-        .AutoMapColumn(x=> x.IntColumn)
-        .AutoMapColumn(x=> x.StringColumn)
-        .AutoMapColumn(x=> x.DecimalColumn)
-        .AutoMapColumn(x=> x.FloatColumn)
-        .AutoMapColumn(x=> x.BitColumn)
+        .AutoMapColumn(x => x.IntColumn)
+        .AutoMapColumn(x => x.StringColumn)
+        .AutoMapColumn(x => x.DecimalColumn)
+        .AutoMapColumn(x => x.FloatColumn)
+        .AutoMapColumn(x => x.BitColumn)
         .ExecuteAsync(data, ctSource.Token);
 
         executorSpy.ExecuteAsyncParameters!.Table.Should().BeEquivalentTo(expectedDataTable);
@@ -82,13 +82,13 @@ public class BulkOperationTests
         .Select(i => new TestObject(i, $"{i}", Convert.ToDecimal(i), Convert.ToDouble(i), true))
         .ToList();
         var expectedDataTable = TestUtil.CreateDataTable(DestinationTable, data);
-        
+
         await bulkOperation
-        .AutoMapColumn(x=> x.IntColumn)
-        .AutoMapColumn(x=> x.StringColumn)
-        .AutoMapColumn(x=> x.DecimalColumn)
-        .AutoMapColumn(x=> x.FloatColumn)
-        .AutoMapColumn(x=> x.BitColumn)
+        .AutoMapColumn(x => x.IntColumn)
+        .AutoMapColumn(x => x.StringColumn)
+        .AutoMapColumn(x => x.DecimalColumn)
+        .AutoMapColumn(x => x.FloatColumn)
+        .AutoMapColumn(x => x.BitColumn)
         .ExecuteAsync(data, SqlBulkCopyOptions.FireTriggers);
 
         executorSpy.ExecuteAsyncParameters!.Table.Should().BeEquivalentTo(expectedDataTable);

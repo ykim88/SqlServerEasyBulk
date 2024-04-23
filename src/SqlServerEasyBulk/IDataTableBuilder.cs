@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 
-namespace EasyBulk
+namespace SqlServerEasyBulk
 {
     internal interface IDataTableBuilder<T>
     {

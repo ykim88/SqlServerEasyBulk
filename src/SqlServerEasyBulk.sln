@@ -3,17 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBulkTests", "EasyBulkTests\EasyBulkTests.csproj", "{10100EA2-F353-4F6A-A031-D39B94E2EFD3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlServerEasyBulkTests", "SqlServerEasyBulkTests\SqlServerEasyBulkTests.csproj", "{10100EA2-F353-4F6A-A031-D39B94E2EFD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBulk", "EasyBulk\EasyBulk.csproj", "{E2EBF05A-C2D0-41F9-A86B-D159AA3F22E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlServerEasyBulk", "SqlServerEasyBulk\SqlServerEasyBulk.csproj", "{E2EBF05A-C2D0-41F9-A86B-D159AA3F22E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{10100EA2-F353-4F6A-A031-D39B94E2EFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +21,8 @@ Global
 		{E2EBF05A-C2D0-41F9-A86B-D159AA3F22E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2EBF05A-C2D0-41F9-A86B-D159AA3F22E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2EBF05A-C2D0-41F9-A86B-D159AA3F22E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

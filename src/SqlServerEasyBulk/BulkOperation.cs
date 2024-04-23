@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulk
+namespace SqlServerEasyBulk
 {
     internal class BulkOperation<T> : IBulkOperation<T>
     {
@@ -30,7 +30,7 @@ namespace EasyBulk
                 .FillWith(data)
                 .Build())
             {
-                if(table.Rows.Count == 0)
+                if (table.Rows.Count == 0)
                     return;
 
                 await _executor.ExecuteAsync(table, options, cancellationToken);

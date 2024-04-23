@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace EasyBulk
+namespace SqlServerEasyBulk
 {
     internal class ColumnAutoMapper<T, TData> : IColumnMapper<T> where T : class
     {

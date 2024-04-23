@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulkTests.Integrations;
+namespace SqlServerEasyBulkTests.Integrations;
 
 [SetUpFixture]
 public class TestSetup

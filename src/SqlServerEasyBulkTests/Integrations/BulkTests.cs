@@ -1,10 +1,10 @@
 using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using EasyBulk.Extensions;
 using FluentAssertions;
+using SqlServerEasyBulk.Extensions;
 
-namespace EasyBulkTests.Integrations;
+namespace SqlServerEasyBulkTests.Integrations;
 
 public class BulkTests
 {
@@ -107,13 +107,13 @@ public class BulkTests
     [Test]
     public async Task FillOneDateTimeOffestColumn()
     {
-         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 DATETIMEOFFSET(7)NOT NULL)");
-        var data = Enumerable.Range(0,100)
+        var data = Enumerable.Range(0, 100)
         .Select(i => DateTimeOffset.UtcNow.AddSeconds(i))
         .ToList();
-        
+
         await connection.Bulk<DateTimeOffset>("Test")
         .MapColumn("Column1", i => i)
         .ExecuteAsync(data);
@@ -125,13 +125,13 @@ public class BulkTests
     [Test]
     public async Task FillOneDateTimeOffestNullColumn()
     {
-         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 DATETIMEOFFSET(7) NULL)");
-        var data = Enumerable.Range(0,100)
+        var data = Enumerable.Range(0, 100)
         .Select<int, DateTimeOffset?>(_ => null)
         .ToList();
-        
+
         await connection.Bulk<DateTimeOffset?>("Test")
         .MapColumn("Column1", i => i)
         .ExecuteAsync(data);
@@ -143,13 +143,13 @@ public class BulkTests
     [Test]
     public async Task FillOneDateTimeColumn()
     {
-         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 DATETIME2 NOT NULL)");
-        var data = Enumerable.Range(0,100)
+        var data = Enumerable.Range(0, 100)
         .Select(i => DateTime.UtcNow.AddSeconds(i))
         .ToList();
-        
+
         await connection.Bulk<DateTime>("Test")
         .MapColumn("Column1", i => i)
         .ExecuteAsync(data);
@@ -161,13 +161,13 @@ public class BulkTests
     [Test]
     public async Task FillOneDateTimeNullColumn()
     {
-         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Column1 DATETIME2 NULL)");
-        var data = Enumerable.Range(0,100)
+        var data = Enumerable.Range(0, 100)
         .Select<int, DateTime?>(_ => null)
         .ToList();
-        
+
         await connection.Bulk<DateTime?>("Test")
         .MapColumn("Column1", i => i)
         .ExecuteAsync(data);
@@ -179,20 +179,20 @@ public class BulkTests
     [Test]
     public async Task DynamicObject()
     {
-         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
+        using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (Date DATETIME2 NULL, I INT)");
-        var data = Enumerable.Range(0,100)
-        .Select(i => new {Date= DateTime.UtcNow, I = i})
+        var data = Enumerable.Range(0, 100)
+        .Select(i => new { Date = DateTime.UtcNow, I = i })
         .ToList();
-        
+
         await connection.Bulk<dynamic>("Test")
         .MapColumn("Date", i => i.Date)
         .MapColumn("I", i => i.I)
         .ExecuteAsync(data);
 
         var result = await connection.QueryAsync<dynamic>("SELECT Date, I FROM Test");
-        result.Select(r => new{r.Date, r.I}).Should().BeEquivalentTo(data);
+        result.Select(r => new { r.Date, r.I }).Should().BeEquivalentTo(data);
     }
 
     [TearDown]

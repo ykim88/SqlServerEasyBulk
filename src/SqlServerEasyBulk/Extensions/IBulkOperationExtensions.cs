@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulk.Extensions
+namespace SqlServerEasyBulk.Extensions
 {
     public static class IBulkOperationExtensions
     {
@@ -21,11 +21,11 @@ namespace EasyBulk.Extensions
             return bulkOp.MapColumn(map);
         }
 
-        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data) 
+        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data)
             => bulk.ExecuteAsync(data, SqlBulkCopyOptions.Default, CancellationToken.None);
-        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data, SqlBulkCopyOptions options) 
+        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data, SqlBulkCopyOptions options)
             => bulk.ExecuteAsync(data, options, CancellationToken.None);
-        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data, CancellationToken cancellationToken) 
-            => bulk.ExecuteAsync(data, SqlBulkCopyOptions.Default, cancellationToken);        
+        public static Task ExecuteAsync<T>(this IBulkOperation<T> bulk, IEnumerable<T> data, CancellationToken cancellationToken)
+            => bulk.ExecuteAsync(data, SqlBulkCopyOptions.Default, cancellationToken);
     }
 }

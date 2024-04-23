@@ -1,10 +1,10 @@
 ﻿using System.Data;
 using Dapper;
-using EasyBulk;
+using SqlServerEasyBulk;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulkTests.Integrations;
+namespace SqlServerEasyBulkTests.Integrations;
 
 public class BulkCopyExecutorTests
 {

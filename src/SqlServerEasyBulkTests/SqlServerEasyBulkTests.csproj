@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyBulk\EasyBulk.csproj" />
+    <ProjectReference Include="../SqlServerEasyBulk/SqlServerEasyBulk.csproj" />
   </ItemGroup>
 
   <ItemGroup>

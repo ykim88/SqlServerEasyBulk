@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
-namespace EasyBulk
+namespace SqlServerEasyBulk
 {
     public interface IBulkOperation<T>
     {

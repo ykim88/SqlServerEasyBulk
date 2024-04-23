@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace EasyBulk
+namespace SqlServerEasyBulk
 {
     internal interface IDataTableColumnMapping<T>
     {

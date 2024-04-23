@@ -1,7 +1,7 @@
-﻿using EasyBulk;
+﻿using SqlServerEasyBulk;
 using FluentAssertions;
 
-namespace EasyBulkTests;
+namespace SqlServerEasyBulkTests;
 
 public class ColumnMapperTests
 {
@@ -10,7 +10,7 @@ public class ColumnMapperTests
     [TestCase("thisIsAString")]
     public void MapType<T>(T _)
     {
-        var columnMap = new ColumnMapper<T,T>("DoNotMatter", _=>_);
+        var columnMap = new ColumnMapper<T, T>("DoNotMatter", _ => _);
 
         columnMap.ColumnType.Should().Be(typeof(T));
     }
@@ -18,7 +18,7 @@ public class ColumnMapperTests
     [Test]
     public void MapDecimal()
     {
-        var columnMap = new ColumnMapper<decimal,decimal>("DoNotMatter", _=>_);
+        var columnMap = new ColumnMapper<decimal, decimal>("DoNotMatter", _ => _);
 
         columnMap.ColumnType.Should().Be(typeof(decimal));
     }
@@ -26,7 +26,7 @@ public class ColumnMapperTests
     [Test]
     public void MapNullableInt()
     {
-        var columnMap = new ColumnMapper<int?,int?>("DoNotMatter", i=>i);
+        var columnMap = new ColumnMapper<int?, int?>("DoNotMatter", i => i);
 
         columnMap.ColumnType.Should().Be(typeof(int));
     }
@@ -34,7 +34,7 @@ public class ColumnMapperTests
     [Test]
     public void MapNullableDecimal()
     {
-        var columnMap = new ColumnMapper<decimal?,decimal?>("DoNotMatter", i=>i);
+        var columnMap = new ColumnMapper<decimal?, decimal?>("DoNotMatter", i => i);
 
         columnMap.ColumnType.Should().Be(typeof(decimal));
     }
@@ -42,7 +42,7 @@ public class ColumnMapperTests
     [Test]
     public void MapNullableDouble()
     {
-        var columnMap = new ColumnMapper<double?, double?>("DoNotMatter", i=>i);
+        var columnMap = new ColumnMapper<double?, double?>("DoNotMatter", i => i);
 
         columnMap.ColumnType.Should().Be(typeof(double));
     }
@@ -50,9 +50,9 @@ public class ColumnMapperTests
     [Test]
     public void MapDynamic()
     {
-        var obj = new{ NullableNumber = default(float?) };
+        var obj = new { NullableNumber = default(float?) };
 
-        var columnMap = new ColumnMapper<dynamic, float?>("DoNotMatter", o=>o.NullableNumber);
+        var columnMap = new ColumnMapper<dynamic, float?>("DoNotMatter", o => o.NullableNumber);
 
         columnMap.ColumnType.Should().Be(typeof(float));
         columnMap.DataSelector(obj).Should().Be(obj.NullableNumber);

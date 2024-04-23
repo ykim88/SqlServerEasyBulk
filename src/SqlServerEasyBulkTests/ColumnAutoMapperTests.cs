@@ -1,7 +1,7 @@
-using EasyBulk;
+using SqlServerEasyBulk;
 using FluentAssertions;
 
-namespace EasyBulkTests;
+namespace SqlServerEasyBulkTests;
 
 public class ColumnAutoMapperTests
 {
