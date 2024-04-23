@@ -5,12 +5,12 @@ using Microsoft.Data.SqlClient;
 
 namespace EasyBulk
 {
-    internal class BulkCopyExecutor
+    internal class SqlBulkCopyExecutor : IBulkCopyExecutor
     {
         private readonly SqlConnection _connection;
         private readonly SqlTransaction _transaction;
 
-        public BulkCopyExecutor(SqlConnection connection, SqlTransaction transaction)
+        public SqlBulkCopyExecutor(SqlConnection connection, SqlTransaction transaction)
         {
             _connection = connection;
             _transaction = transaction;

@@ -8,18 +8,13 @@ namespace EasyBulk
     internal class BulkOperation<T> : IBulkOperation<T>
     {
         private readonly string _tableName;
-        private readonly SqlConnection _connection;
-        private readonly SqlTransaction _transaction;
+        private readonly IBulkCopyExecutor _executor;
         private List<IColumnMapper<T>> _columnMappings = new List<IColumnMapper<T>>();
 
-        internal BulkOperation(string destinationTable, SqlConnection connection) : this(destinationTable, connection, null)
-        { }
-
-        internal BulkOperation(string destinationTable, SqlConnection connection, SqlTransaction transaction)
+        internal BulkOperation(string destinationTable, IBulkCopyExecutor executor)
         {
             _tableName = destinationTable;
-            _connection = connection;
-            _transaction = transaction;
+            _executor = executor;
         }
 
         public IBulkOperation<T> MapColumn(IColumnMapper<T> columnMap)
@@ -28,10 +23,6 @@ namespace EasyBulk
             return this;
         }
 
-        public Task ExecuteAsync(IEnumerable<T> data) => ExecuteAsync(data, SqlBulkCopyOptions.Default, CancellationToken.None);
-        public Task ExecuteAsync(IEnumerable<T> data, CancellationToken cancellationToken) => ExecuteAsync(data, SqlBulkCopyOptions.Default, cancellationToken);
-        public Task ExecuteAsync(IEnumerable<T> data, SqlBulkCopyOptions options) => ExecuteAsync(data, options, CancellationToken.None);
-
         public async Task ExecuteAsync(IEnumerable<T> data, SqlBulkCopyOptions options, CancellationToken cancellationToken)
         {
             using (var table = DataTableBuilder.Create<T>(_tableName)
@@ -39,8 +30,10 @@ namespace EasyBulk
                 .FillWith(data)
                 .Build())
             {
-                var executor = new BulkCopyExecutor(_connection, _transaction);
-                await executor.ExecuteAsync(table, options, cancellationToken);
+                if(table.Rows.Count == 0)
+                    return;
+
+                await _executor.ExecuteAsync(table, options, cancellationToken);
             }
         }
     }

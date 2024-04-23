@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 
 namespace EasyBulk
 {
-
     internal class ColumnMapper<T, TData> : IColumnMapper<T>
     {
         public readonly Func<T, TData> _dataSelector;

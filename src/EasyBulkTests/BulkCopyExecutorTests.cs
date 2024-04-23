@@ -14,7 +14,7 @@ public class BulkCopyExecutorTests
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
-        var executor = new BulkCopyExecutor(connection, null);
+        var executor = new SqlBulkCopyExecutor(connection, null);
         using var table = CreateDatatTable("Test");
 
         await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);
@@ -30,7 +30,7 @@ public class BulkCopyExecutorTests
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
         using SqlTransaction transaction = connection.BeginTransaction();
-        var executor = new BulkCopyExecutor(connection, transaction);
+        var executor = new SqlBulkCopyExecutor(connection, transaction);
         using var table = CreateDatatTable("Test");
 
         await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);
@@ -47,7 +47,7 @@ public class BulkCopyExecutorTests
         await connection.OpenAsync();
         await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
         using SqlTransaction transaction = connection.BeginTransaction();
-        var executor = new BulkCopyExecutor(connection, transaction);
+        var executor = new SqlBulkCopyExecutor(connection, transaction);
         using var table = CreateDatatTable("Test");
         await transaction.RollbackAsync();
 
@@ -61,7 +61,7 @@ public class BulkCopyExecutorTests
     {
         using var connection = new SqlConnection(TestSetup.TestDbConnectionString);
         await connection.ExecuteAsync("CREATE TABLE Test (IntColumn int, StringColumn varchar(10), DecimalColumn decimal(10,4), FloatColumn float, BitColumn bit)");
-        var executor = new BulkCopyExecutor(connection, null);
+        var executor = new SqlBulkCopyExecutor(connection, null);
         using var table = CreateDatatTable("Test");
 
         var execute = async () => await executor.ExecuteAsync(table, SqlBulkCopyOptions.Default, CancellationToken.None);

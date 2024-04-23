@@ -3,6 +3,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using NUnit.Framework.Legacy;
 using EasyBulk;
+using EasyBulk.Extensions;
 
 namespace EasyBulkTests;
 
