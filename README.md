@@ -61,9 +61,9 @@ var data = new List<User>
 // Map specific columns with custom names if needed
 await connection
     .Bulk<User>("Users")
-    .MapColumn(new ColumnMapper<User, int>("UserId", x => x.Id))
-    .MapColumn(new ColumnMapper<User, string>("UserName", x => x.Name))
-    .MapColumn(new ColumnMapper<User, string>("UserEmail", x => x.Email))
+    .MapColumn("UserId", x => x.Id)
+    .MapColumn("UserName", x => x.Name)
+    .MapColumn("UserEmail", x => x.Email))
     .ExecuteAsync(data);
 ```
 
@@ -129,9 +129,9 @@ try
     
     await connection
         .Bulk<Product>(transaction, "Products")
-        .MapColumn(new ColumnMapper<Product, int>("ProductId", x => x.Id))
-        .MapColumn(new ColumnMapper<Product, string>("ProductName", x => x.Name))
-        .MapColumn(new ColumnMapper<Product, decimal>("Price", x => x.Price))
+        .MapColumn("ProductId", x => x.Id)
+        .MapColumn("ProductName", x => x.Name)
+        .MapColumn("Price", x => x.Price)
         .ExecuteAsync(products, SqlBulkCopyOptions.KeepNulls, cts.Token);
     
     await transaction.CommitAsync();
@@ -158,7 +158,7 @@ Creates a new bulk operation with an existing transaction.
 #### `AutoMapColumn<TProperty>(Expression<Func<T, TProperty>> selector)`
 Automatically maps a table column to an object property. The property name must match the column name.
 
-#### `MapColumn(IColumnMapper<T> columnMap)`
+#### `MapColumn(string columnName, Func<T,TValue> valueSelector)`
 Manually maps a column with explicit control over the column name and property mapping.
 
 #### `ExecuteAsync(IEnumerable<T> data)`
@@ -197,18 +197,6 @@ The library includes comprehensive unit tests to ensure reliability. Tests cover
 ## 📄 License
 
 MIT License
-
-Copyright (c) 2024 ykim88
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
 
 **THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
