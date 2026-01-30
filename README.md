@@ -1,42 +1,34 @@
 # SqlServerEasyBulk
 
-SqlServerEasyBulk is an easy-to-use library for performing bulk operations in SQL Server. This library allows developers to efficiently insert, update, or delete large volumes of data.
+## Fluent API Documentation
+- Detailed documentation on how to utilize the fluent API.
 
-## Features
-- **Simple API**: Provides a straightforward interface for executing bulk operations.
-- **Performance**: Optimized for speed, ensuring that large datasets can be handled without a hitch.
-- **Transactions**: Supports database transactions to maintain data integrity during bulk operations.
-- **Flexible Options**: Choose between inserting, updating, or deleting records with ease.
+## Auto-Mapping Examples
+- Examples showcasing how to use auto-mapping in your projects.
 
-## Installation
-To install SqlServerEasyBulk, you can use NuGet Package Manager:
-```bash
-Install-Package SqlServerEasyBulk
-```
+## Manual Column Mapping with ColumnMapper Examples
+- Step-by-step guide on implementing manual column mapping.
 
-## Usage Examples
-### Inserting Data
-```csharp
-using SqlServerEasyBulk;
+## Transaction Examples
+- Illustrations of how to handle transactions effectively.
 
-var bulk = new BulkOperations();
-var records = new List<YourDataModel> { ... };
-bulk.Insert(records);
-```
+## Cancellation Token Examples
+- Examples demonstrating the use of cancellation tokens in operations.
 
-### Updating Data
-```csharp
-var updates = new List<YourDataModel> { ... };
-bulk.Update(updates);
-```
+## API Reference
+- Complete API reference for all available methods and classes.
 
-### Deleting Data
-```csharp
-var idsToDelete = new List<int> { 1, 2, 3 };
-bulk.Delete(idsToDelete);
-```
+## Requirements
+- List of all system and software requirements.
 
-## Conclusion
-SqlServerEasyBulk simplifies working with large datasets in SQL Server. Harness the power of bulk operations and streamline your data-handling tasks today!
+## Testing Notes
+- Information about testing procedures and frameworks used.
 
-For more details, check the documentation and examples.
+## Important Notes
+- Miscellaneous important information regarding the usage of this library.
+
+## MIT License
+MIT License information.
+
+## Disclaimer
+- A brief disclaimer about the project and its usage.
