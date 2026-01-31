@@ -143,39 +143,6 @@ catch
 }
 ```
 
-## 🔧 API Reference
-
-### Extension Methods
-
-#### `Bulk<T>(SqlConnection connection, string tableName)`
-Creates a new bulk operation without a transaction.
-
-#### `Bulk<T>(SqlConnection connection, SqlTransaction transaction, string tableName)`
-Creates a new bulk operation with an existing transaction.
-
-### IBulkOperation<T>
-
-#### `AutoMapColumn<TProperty>(Expression<Func<T, TProperty>> selector)`
-Automatically maps a table column to an object property. The property name must match the column name.
-
-#### `MapColumn(string columnName, Func<T,TValue> valueSelector)`
-Manually maps a column with explicit control over the column name and property mapping.
-
-#### `ExecuteAsync(IEnumerable<T> data)`
-Executes the bulk operation with default options.
-
-#### `ExecuteAsync(IEnumerable<T> data, CancellationToken cancellationToken)`
-Executes the bulk operation with cancellation support.
-
-#### `ExecuteAsync(IEnumerable<T> data, SqlBulkCopyOptions options, CancellationToken cancellationToken)`
-Executes the bulk operation with custom options and cancellation support.
-
-## 📋 Requirements
-
-- .NET 6.0 or higher
-- SQL Server 2016 or higher
-- Microsoft.Data.SqlClient
-
 ## 🧪 Testing
 
 The library includes comprehensive unit tests to ensure reliability. Tests cover:
@@ -196,7 +163,8 @@ The library includes comprehensive unit tests to ensure reliability. Tests cover
 
 ## 📄 License
 
-MIT License
+MIT License\
+
 
 **THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
